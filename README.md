@@ -1,4 +1,4 @@
-# Weather App
+# Country Search
 
 Get information from any country in real time, including the current weather in the capital.
 
