@@ -2,7 +2,7 @@ import './index.css';
 import { useState, useEffect } from 'react';
 import countriesService from './services/countries';
 import weatherService from './services/weather';
-import Searchbar from './components/Searchbar';
+import Searchbar from './components/Searchbar.jsx';
 import FavoriteCard from './components/FavoriteCard';
 
 const App = () => {
