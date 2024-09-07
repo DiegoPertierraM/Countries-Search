@@ -1,19 +1,24 @@
-import "./index.css";
-import { useState, useEffect } from "react";
-import countriesService from "./services/countries";
-import weatherService from "./services/weather";
-import Searchbar from "./components/searchbar";
+import './index.css';
+import { useState, useEffect } from 'react';
+import countriesService from './services/countries';
+import weatherService from './services/weather';
+import Searchbar from './components/Searchbar';
+import FavoriteCard from './components/FavoriteCard';
 
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [search, setSearch] = useState([]);
   const [weather, setWeather] = useState({});
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     countriesService.getAll().then((response) => {
       setCountries(response.data);
     });
+
+    const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setFavorites(savedFavorites);
   }, []);
 
   useEffect(() => {
@@ -49,6 +54,22 @@ const App = () => {
     return handler;
   };
 
+  const addToFavorites = (country) => {
+    if (!favorites.some((fav) => fav.name.common === country.name.common)) {
+      const updatedFavorites = [...favorites, country];
+      setFavorites(updatedFavorites);
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    }
+  };
+
+  const removeFromFavorites = (country) => {
+    const updatedFavorites = favorites.filter(
+      (fav) => fav.name.common !== country.name.common
+    );
+    setFavorites(updatedFavorites);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+  };
+
   const searchReturn = (countries) => {
     if (countries.length <= 0 || countries.length === 250) {
       return <></>;
@@ -63,10 +84,10 @@ const App = () => {
       return (
         <ul>
           <li>
-            <h2>{country.name.common}</h2>
+            <h2 className="country-header">{country.name.common}</h2>
           </li>
-          <li>capital {country.capital[0]}</li>
-          <li>area {country.area}</li>
+          <li>Capital: {country.capital[0]}</li>
+          <li>Area: {country.area}</li>
           <li>
             <h3>languages:</h3>
             <ul className="languages">
@@ -81,9 +102,9 @@ const App = () => {
             <img src={country.flags.svg} alt="Country flag" width="150" />
           </li>
           <li>
-            <h3>Weather in {country.capital}</h3>
+            <h3 className="weather-header">Weather in {country.capital}</h3>
           </li>
-          <li>temperature {weather.main?.temp} Celsius</li>
+          <li>Temperature: {weather.main?.temp} Celsius</li>
           {weather.weather && weather.weather[0] && (
             <li>
               <img
@@ -92,7 +113,21 @@ const App = () => {
               />
             </li>
           )}
-          <li>wind {weather.wind?.speed} m/s</li>
+          <li>Wind: {weather.wind?.speed} m/s</li>
+          <li>
+            <button
+              className="show-btn"
+              onClick={() => addToFavorites(country)}
+            >
+              Add to favorites
+            </button>
+            <button
+              className="remove-btn"
+              onClick={() => removeFromFavorites(country)}
+            >
+              Remove from favorites
+            </button>
+          </li>
         </ul>
       );
     }
@@ -100,19 +135,38 @@ const App = () => {
     if (countries.length > 1 && countries.length <= 10) {
       return countries.map((country) => (
         <li key={country.cca3}>
-          <span>{country.name.common}</span>{" "}
+          <span>{country.name.common}</span>{' '}
           <button onClick={showCountry(country.name.common)}>show</button>
         </li>
       ));
     }
   };
 
+  const renderFavorites = () => {
+    if (favorites.length === 0) {
+      return <p>No favorite countries yet.</p>;
+    }
+    return (
+      <div className="favorites-container">
+        {favorites.map((country) => (
+          <FavoriteCard
+            key={country.cca3}
+            country={country}
+            removeFromFavorites={removeFromFavorites}
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
-    <div>
-      <h1>Country Search</h1>
+    <div className="container">
+      <h1>Dynamic Country Search</h1>
       <h2>Search a country</h2>
       <Searchbar handleCountries={handleCountries} />
       <ul>{searchReturn(search)}</ul>
+      <h2>Your Favorite Countries</h2>
+      {renderFavorites()}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import "./searchbar.css";
+import './Searchbar.css';
 
 const Searchbar = ({ handleCountries }) => {
   return (

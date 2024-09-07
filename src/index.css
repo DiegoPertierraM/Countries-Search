@@ -1,7 +1,21 @@
-body {
-  margin: 1rem;
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  font-family: monospace;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #e2e8f3;
+  color: #333;
+  line-height: 1.6;
+  padding-block: 1.2rem;
+  padding-inline: 1.2rem;
+}
+
+h1,
+h2 {
+  color: #2c3e50;
 }
 
 ul,
@@ -17,4 +31,107 @@ ul {
 .languages {
   list-style: initial;
   padding-inline-start: 1.5rem;
+}
+
+/* Container for the app */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-block: 1.2rem;
+  padding-inline: 1.2rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styles */
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-block-end: 1.2rem;
+  color: #2d3436;
+}
+
+h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-block-end: 1.2rem;
+  color: #636e72;
+}
+
+h3 {
+  border-bottom: 1px solid #dfe6e9;
+}
+
+.country-header {
+  color: #0984e3;
+}
+
+.weather-header {
+  margin-block-start: 2rem;
+}
+
+/* Country List */
+.container > ul {
+  border: 2px solid #b2bec3;
+  padding-block: 0.5rem;
+  padding-inline: 3rem;
+  border-radius: 0.5rem;
+}
+
+ul {
+  padding: 0;
+  margin-block: 1.2rem;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  text-align: left;
+}
+
+li span {
+  font-weight: 500;
+}
+
+/* Show & Remove Buttons */
+.show-btn,
+.remove-btn {
+  color: white;
+  border: none;
+  margin-block-start: 0.5rem;
+  padding-block: 0.5rem;
+  padding-inline: 0.7rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.show-btn {
+  background-color: #74b9ff;
+}
+
+.show-btn:hover {
+  background-color: #0984e3;
+}
+
+.remove-btn {
+  background-color: #e17055;
+}
+
+.remove-btn:hover {
+  background-color: #d35400;
+}
+
+/* General Media Queries */
+@media (max-width: 1200px) {
+  .container {
+    padding-block: 1rem;
+    padding-inline: 1rem;
+  }
 }

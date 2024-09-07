@@ -1,6 +1,16 @@
 input {
-  width: 24rem;
-  height: 1.3rem;
-  border-radius: 2rem;
-  padding-inline-start: 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding-block: 0.5rem;
+  padding-inline-start: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid #b2bec3;
+  margin-block-end: 1.2rem;
+  transition: border-color 0.3s ease;
+}
+
+input:hover {
+  border-color: #0984e3;
 }
