@@ -1,4 +1,4 @@
-import './FavoriteCard.css';
+import "./FavoriteCard.css";
 
 const FavoriteCard = ({ country, removeFromFavorites }) => {
   return (
@@ -8,10 +8,10 @@ const FavoriteCard = ({ country, removeFromFavorites }) => {
       <p>Capital: {country.capital[0]}</p>
       <p>Area: {country.area} km²</p>
       <p>
-        Languages:{' '}
+        Languages:{" "}
         {Object.keys(country.languages)
           .map((key) => country.languages[key])
-          .join(', ')}
+          .join(", ")}
       </p>
       <button
         className="remove-btn"
