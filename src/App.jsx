@@ -1,9 +1,9 @@
-import "./index.css";
-import { useState, useEffect } from "react";
-import countriesService from "./services/countries";
-import weatherService from "./services/weather";
-import Searchbar from "./components/Searchbar";
-import FavoriteCard from "./components/FavoriteCard";
+import './index.css';
+import { useState, useEffect } from 'react';
+import countriesService from './services/countries';
+import weatherService from './services/weather';
+import Searchbar from './components/Searchbar';
+import FavoriteCard from './components/FavoriteCard';
 
 const App = () => {
   const [countries, setCountries] = useState([]);
@@ -17,7 +17,7 @@ const App = () => {
       setCountries(response.data);
     });
 
-    const savedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(savedFavorites);
   }, []);
 
@@ -58,7 +58,7 @@ const App = () => {
     if (!favorites.some((fav) => fav.name.common === country.name.common)) {
       const updatedFavorites = [...favorites, country];
       setFavorites(updatedFavorites);
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     }
   };
 
@@ -67,7 +67,7 @@ const App = () => {
       (fav) => fav.name.common !== country.name.common
     );
     setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
 
   const searchReturn = (countries) => {
@@ -135,7 +135,7 @@ const App = () => {
     if (countries.length > 1 && countries.length <= 10) {
       return countries.map((country) => (
         <li key={country.cca3}>
-          <span>{country.name.common}</span>{" "}
+          <span>{country.name.common}</span>{' '}
           <button onClick={showCountry(country.name.common)}>show</button>
         </li>
       ));
