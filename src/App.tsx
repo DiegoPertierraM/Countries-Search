@@ -1,23 +1,28 @@
 import './index.css';
-import { useState, useEffect } from 'react';
-import countriesService from './services/countries';
-import weatherService from './services/weather';
-import Searchbar from './components/Searchbar';
-import FavoriteCard from './components/FavoriteCard';
+import React from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
+import countriesService from './services/countries.ts';
+import weatherService from './services/weather.ts';
+import Searchbar from './components/Searchbar.tsx';
+import FavoriteCard from './components/FavoriteCard.tsx';
+import { Country, Weather } from './models/types.ts';
+import { AxiosResponse } from 'axios';
 
 const App = () => {
-  const [countries, setCountries] = useState([]);
-  const [search, setSearch] = useState([]);
-  const [weather, setWeather] = useState({});
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [favorites, setFavorites] = useState([]);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [search, setSearch] = useState<Country[]>([]);
+  const [weather, setWeather] = useState<Weather>({});
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+  const [favorites, setFavorites] = useState<Country[]>([]);
 
   useEffect(() => {
-    countriesService.getAll().then((response) => {
+    countriesService.getAll().then((response: AxiosResponse<Country[]>) => {
       setCountries(response.data);
     });
 
-    const savedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const savedFavorites: Country[] = JSON.parse(
+      localStorage.getItem('favorites') || '[]'
+    );
     setFavorites(savedFavorites);
   }, []);
 
@@ -30,13 +35,15 @@ const App = () => {
   useEffect(() => {
     if (selectedCountry) {
       weatherService
-        .getWeather(selectedCountry.capital)
-        .then((response) => setWeather(response.data))
-        .catch((error) => console.log(error));
+        .getWeather(selectedCountry.capital as any)
+        .then((response: AxiosResponse<Country[]>) =>
+          setWeather(response.data as any)
+        )
+        .catch((error: Error) => console.log(error));
     }
   }, [selectedCountry]);
 
-  const handleCountries = (event) => {
+  const handleCountries = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setSearch(
       countries.filter((country) =>
@@ -47,14 +54,14 @@ const App = () => {
     );
   };
 
-  const showCountry = (name) => {
+  const showCountry = (name: string) => {
     const handler = () => {
       setSearch(search.filter((country) => country.name.common === name));
     };
     return handler;
   };
 
-  const addToFavorites = (country) => {
+  const addToFavorites = (country: Country) => {
     if (!favorites.some((fav) => fav.name.common === country.name.common)) {
       const updatedFavorites = [...favorites, country];
       setFavorites(updatedFavorites);
@@ -62,7 +69,7 @@ const App = () => {
     }
   };
 
-  const removeFromFavorites = (country) => {
+  const removeFromFavorites = (country: Country) => {
     const updatedFavorites = favorites.filter(
       (fav) => fav.name.common !== country.name.common
     );
@@ -70,7 +77,7 @@ const App = () => {
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
   };
 
-  const searchReturn = (countries) => {
+  const searchReturn = (countries: Country[]) => {
     if (countries.length <= 0 || countries.length === 250) {
       return <></>;
     }

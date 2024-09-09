@@ -1,6 +1,11 @@
+import React from 'react';
 import './FavoriteCard.css';
+import { FavoriteCardProps } from '../models/props.ts';
 
-const FavoriteCard = ({ country, removeFromFavorites }) => {
+const FavoriteCard: React.FC<FavoriteCardProps> = ({
+  country,
+  removeFromFavorites,
+}) => {
   return (
     <div className="favorite-card">
       <h3>{country.name.common}</h3>
